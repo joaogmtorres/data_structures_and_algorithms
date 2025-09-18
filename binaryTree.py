@@ -49,6 +49,8 @@ class BinarySearchTree:
     
     # printing
 
+    # searching
+
     def _search_recursive(self, current, value):
 
         if current is None:
@@ -68,6 +70,47 @@ class BinarySearchTree:
     def search(self, value):
         self._search_recursive(self.root, value)    
     
+    # searching
+
+    # deleting
+    
+    def find_min(self, node):
+        current = node
+        while current.left:
+            current = current.left
+        return current
+
+    def _delete_recursive(self, current, value):
+
+        if current is None:
+            return None
+
+        if value > current.key:
+            current.right = self._delete_recursive(current.right, value)
+        
+        elif value < current.key:
+            current.left =  self._delete_recursive(current.left, value)
+
+        elif current.key == value:
+            if not current.left and not current.right:
+                return None
+            
+            elif current.left is None:
+                return current.right
+            elif current.right is None:
+                return current.left
+
+            elif current.left and current.right:
+                successor = self.find_min(current.right)
+                current.key = successor.key
+                current.right = self._delete_recursive(current.right, successor.key)
+
+        return current
+    
+    def delete(self, value):
+        self.root = self._delete_recursive(self.root, value)
+
+    # deleting
 
 test = BinarySearchTree()
 values = [50, 30, 70, 20, 40, 60, 80]
